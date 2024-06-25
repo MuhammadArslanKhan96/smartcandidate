@@ -15,9 +15,9 @@ export default function SongRow({ songData }) {
       <td className="px-6 py-4">
         {songData.data.title || "N/A"}
       </td>
-      <td className="px-6 py-4">
+      {/* <td className="px-6 py-4">
         <p className="cursor-pointer">{songData.data.audio_url.slice(0, 7)}...{songData.data.audio_url.slice(-8)}</p>
-      </td>
+      </td> */}
       <td className="px-6 py-4 flex justify-end gap-x-2">
         <button onClick={() => {
           if (isPlaying) {

@@ -18,9 +18,9 @@ export default function Songs() {
               <th scope="col" className="px-6 py-3">
                 Title
               </th>
-              <th scope="col" className="px-6 py-3">
+              {/* <th scope="col" className="px-6 py-3">
                 Audio URL
-              </th>
+              </th> */}
               <th scope="col" className="px-6 py-3 text-end">
                 Actions
               </th>
@@ -37,7 +37,7 @@ export default function Songs() {
                   )
                 }) :
                 <tr className="bg-gray-800 border-gray-700 hover:bg-gray-600">
-                  <td colSpan={4} className="text-center px-6 py-4 text-lg">No songs found!</td>
+                  <td colSpan={3} className="text-center px-6 py-4 text-lg">No songs found!</td>
                 </tr>
             }
           </tbody>
