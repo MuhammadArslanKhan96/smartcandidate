@@ -1,5 +1,15 @@
 {
   "appName": "Candidato inteligente",
   "logout": "Sair",
-  "fillAllTheFields": "Preencher todos os campos"
+  "fillAllTheFields": "Preencher todos os campos",
+  "songIdeaLengthExceeded": "Duração da ideia da música excedida",
+  "somethingWentWrong": "Algo deu errado",
+  "createSuccess": "Canção criada com sucesso",
+  "songIdea": "Ideia da música (máximo de 200 caracteres)",
+  "songRhythm": "Ritmo da música",
+  "select": "Select",
+  "loading": "Carregamento",
+  "makeSong": "Criar música",
+  "createJingle": "Create Jingle",
+  "songs": "Músicas"
 }

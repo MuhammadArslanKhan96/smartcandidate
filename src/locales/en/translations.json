@@ -1,5 +1,15 @@
 {
   "appName": "Smart Candidate",
   "logout": "Logout",
-  "fillAllTheFields": "Fill All The Fields"
+  "fillAllTheFields": "Fill All The Fields",
+  "songIdeaLengthExceeded": "Song idea length exceeded",
+  "somethingWentWrong": "Something went wrong",
+  "createSuccess": "Song created Successfully",
+  "songIdea": "Song Idea (Max 200 Char)",
+  "songRhythm": "Song Rhythm",
+  "select": "Select",
+  "loading": "Loading",
+  "makeSong": "Make Song",
+  "createJingle": "Create Jingle",
+  "songs": "Songs"
 }
