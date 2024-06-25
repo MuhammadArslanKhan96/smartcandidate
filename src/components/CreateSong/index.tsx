@@ -94,7 +94,8 @@ const CreateSong = () => {
       setLoading(true);
 
       const songApiData = await axios.post("https://api.sunoaiapi.com/api/v1/gateway/generate/gpt_desc", {
-        gpt_description_prompt: `Create a catchy ${selectedRhythm} jingle in ${selectedLang === "pt" ? "Brazilian Portuguese" : "US English"} for ${user?.gender || "male"} singer promoting ${user?.name}, candidate number ${user?.candidate_number}, with the slogan "${songIdea}" Emphasize his connection to the people and the city.`,
+        gpt_description_prompt: `Create a catchy ${selectedRhythm} jingle in ${selectedLang === "pt" ? "Brazilian Portuguese" : "US English"} for ${user?.name}, candidate number ${user?.candidate_number}, with the slogan "${songIdea}" highlighting his bond with the people and the city.`,
+        // gpt_description_prompt: `Create a catchy ${selectedRhythm} jingle in ${selectedLang === "pt" ? "Brazilian Portuguese" : "US English"} for ${user?.gender || "male"} singer promoting ${user?.name}, candidate number ${user?.candidate_number}, with the slogan "${songIdea}" Emphasize his connection to the people and the city.`,
         make_instrumental: makeInstrumental,
       }, {
         headers: {
