@@ -108,7 +108,7 @@ const CreateSong = () => {
             clearInterval(interval);
             resolve(songD);
           }
-        }, 5000);
+        }, 52500);
       });
 
 
