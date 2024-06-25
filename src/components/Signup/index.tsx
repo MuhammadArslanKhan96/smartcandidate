@@ -15,10 +15,11 @@ const Signup: React.FC = () => {
     committee: "",
     password: "",
     confirmPassword: "",
+    gender: ""
   });
   const { setUser } = useAuthContext();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | string) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | string) => {
     if (typeof e === "string") {
       setFormData({
         ...formData,
@@ -41,7 +42,8 @@ const Signup: React.FC = () => {
       !formData.email ||
       !formData.name ||
       !formData.password ||
-      !formData.phone
+      !formData.phone ||
+      !formData.gender
     )
       return toast.error("Fill all of the required fields !!");
     if (formData.password !== formData.confirmPassword)
@@ -54,6 +56,7 @@ const Signup: React.FC = () => {
         formData.committee,
         formData.name,
         formData.phone,
+        formData.gender
       );
 
       setUser(data);
@@ -67,6 +70,7 @@ const Signup: React.FC = () => {
         committee: "",
         password: "",
         confirmPassword: "",
+        gender: ""
       });
     } catch (error: any) {
       toast.error(error.message);
@@ -203,6 +207,28 @@ const Signup: React.FC = () => {
                 onChange={handleChange}
                 className="w-full rounded border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-950 focus:outline-none focus:ring-indigo-500 sm:text-sm"
               />
+            </div>
+          </div>
+          <div>
+            <label
+              htmlFor="gender"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Gender
+            </label>
+            <div className="mt-1">
+              <select
+                id="gender"
+                name="gender"
+                required
+                value={formData.gender}
+                onChange={handleChange}
+                className="w-full rounded border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-950 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              >
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
             </div>
           </div>
           <div>

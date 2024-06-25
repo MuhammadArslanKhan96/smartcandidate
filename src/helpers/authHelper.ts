@@ -1,6 +1,6 @@
 import { auth, db } from "@/utils/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 
 async function getUser(email: string) {
   const userDoc = await getDoc(doc(db, "users", email));
@@ -10,7 +10,7 @@ async function getUser(email: string) {
   return userDoc.data()
 }
 
-export const signUpWithEmail = async (email: string, password: string, committee: string, name: string, phone: string) => {
+export const signUpWithEmail = async (email: string, password: string, committee: string, name: string, phone: string, gender: string) => {
 
   const userExists = await getUser(email);
 
@@ -30,11 +30,13 @@ export const signUpWithEmail = async (email: string, password: string, committee
 
   if (!success) throw new Error(error?.errorMessage);
 
+  const totalCandidates = (await getDocs(collection(db, "users"))).docs.length;
+
   const { displayName, phoneNumber, providerData, refreshToken } = data;
 
-  await setDoc(doc(db, "users", data.email), { committee, name, phone, displayName, email, phoneNumber, providerData, refreshToken, isAdmin: false, isFrozen: true });
+  await setDoc(doc(db, "users", data.email), { committee, name, phone, displayName, email, phoneNumber, providerData, refreshToken, isAdmin: false, isFrozen: true, candidate_number: totalCandidates + 1, gender });
 
-  return { ...data, committee, name, phone, isAdmin: false, isFrozen: true };
+  return { ...data, committee, name, phone, isAdmin: false, isFrozen: true, candidate_number: totalCandidates + 1, gender };
 
 }
 

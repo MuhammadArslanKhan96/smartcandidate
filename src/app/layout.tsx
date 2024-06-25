@@ -6,6 +6,8 @@ import "../styles/index.css";
 import "../styles/prism-vsc-dark-plus.css";
 import VoiceContextProvider from "@/context/VoiceContext";
 import { AuthContextProvider } from "@/context/AuthContext";
+import Loading from "@/components/Loading";
+import TranslationContextProvider from "@/context/TranslationContext";
 
 export default function RootLayout({
   children,
@@ -22,12 +24,15 @@ export default function RootLayout({
           enableSystem={false}
           defaultTheme="light"
         >
-          <VoiceContextProvider>
-            <AuthContextProvider>
-              {children}
-              <ScrollToTop />
-            </AuthContextProvider>
-          </VoiceContextProvider>
+          <TranslationContextProvider>
+            <VoiceContextProvider>
+              <AuthContextProvider>
+                <Loading />
+                {children}
+                <ScrollToTop />
+              </AuthContextProvider>
+            </VoiceContextProvider>
+          </TranslationContextProvider>
         </ThemeProvider>
       </body>
     </html>

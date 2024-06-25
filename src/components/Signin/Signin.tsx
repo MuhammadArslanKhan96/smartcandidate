@@ -7,9 +7,11 @@ import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "react-hot-toast";
 import { db } from "@/utils/firebase";
 import { query, collection, where, getDocs } from "firebase/firestore";
+import { useTranslation } from "@/context/TranslationContext";
 
 const Signin: React.FC = () => {
   const { setUser, setUserSongs } = useAuthContext();
+  const { translations } = useTranslation()
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -29,7 +31,7 @@ const Signin: React.FC = () => {
 
     try {
       if (!credentials.email || !credentials.password)
-        return toast.error("Fill All The Fields !!");
+        return toast.error(translations["fillAllTheFields"] + " !!");
       user = await signInWithEmail(credentials.email, credentials.password);
 
       setUser(user);

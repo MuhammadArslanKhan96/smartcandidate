@@ -1,15 +1,28 @@
 import { useAuthContext } from '@/context/AuthContext';
+import { useTranslation } from '@/context/TranslationContext';
 import { db } from '@/utils/firebase';
 import axios from 'axios';
 import { addDoc, collection } from 'firebase/firestore';
 import { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
+const Rhythms = {
+  "Sertanejo": "sertanejo",
+  "Sertanejo 2": "sertanejo, uplifting",
+  Pagode: "pagode",
+  "Hip Hop": "hip hop, bass, trap",
+  "Hip Hop 2": "hip hop vibrant",
+  "Samba": "samba, bossa nova",
+  "Samba 2": "samba, lively",
+  Funk: "trap brasileiro, bass"
+}
+
 const CreateSong = () => {
   // const [song, setSong] = useState<any>();
   const [makeInstrumental, setMakeInstrumental] = useState(false);
   const [loading, setLoading] = useState(false);
   const { user, setUserSongs } = useAuthContext();
+  const { translations, selectedLang } = useTranslation();
 
   // const handleTextToSpeech = async e => {
   //   e.preventDefault();
@@ -69,7 +82,9 @@ const CreateSong = () => {
   const handleCreateSong = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { songIdea }: any = Object.fromEntries(new FormData(e.currentTarget));
+    const { songIdea, selectedRhythm }: any = Object.fromEntries(new FormData(e.currentTarget));
+
+    if (!songIdea || !selectedRhythm) return toast.error(translations["fillAllTheFields"])
 
     if (songIdea.length > 200) {
       return toast.error("Song idea length exceeded");
@@ -79,7 +94,7 @@ const CreateSong = () => {
       setLoading(true);
 
       const songApiData = await axios.post("https://api.sunoaiapi.com/api/v1/gateway/generate/gpt_desc", {
-        gpt_description_prompt: songIdea,
+        gpt_description_prompt: `Create a catchy ${selectedRhythm} jingle in ${selectedLang === "pt" ? "Brazilian Portuguese" : "US English"} for ${user?.gender || "male"} singer promoting ${user?.name}, candidate number ${user?.candidate_number}, with the slogan "${songIdea}" Emphasize his connection to the people and the city.`,
         make_instrumental: makeInstrumental,
       }, {
         headers: {
@@ -94,6 +109,8 @@ const CreateSong = () => {
       // newData.forEach(async (data: any) => {
 
       const data = newData[0];
+
+      if (!data) return toast.error("Something went wrong !!");
 
       const songData = await new Promise(async resolve => {
         const interval = setInterval(async () => {
@@ -152,7 +169,21 @@ const CreateSong = () => {
         <textarea name="songIdea" id="songIdea" rows={5} className='bg-gray-500 border-none outline-none px-6 py-8 rounded-lg resize-none w-full' />
       </div>
 
-      <label><input type="checkbox" checked={makeInstrumental} onChange={e => setMakeInstrumental(e.target.checked)} /> Instrumental ?</label>
+
+      <div className="flex justify-between gap-2">
+        <label className='w-full'><input type="checkbox" checked={makeInstrumental} onChange={e => setMakeInstrumental(e.target.checked)} /> Instrumental ?</label>
+        <div className="flex w-full flex-col gap-2">
+          <label htmlFor="selectedRhythm" className='font-medium text-base lg:text-lg'>Song Rhythm</label>
+          <select name="selectedRhythm" id="selectedRhythm" className='bg-gray-500 border-none outline-none px-2 py-4 rounded-lg resize-none w-full'>
+            <option value="">Select</option>
+            {
+              Object.entries(Rhythms).map(([key, value]) => (
+                <option value={value} key={key}>{key}</option>
+              ))
+            }
+          </select>
+        </div>
+      </div>
 
       <div className="flex items-center justify-center w-full">
         <button disabled={loading} type='submit' className='py-4 bg-blue-600 rounded-xl border border-blue-600 hover:bg-transparent text-white hover:text-blue-600 disabled:cursor-not-allowed transition-all duration-300 ease-in-out w-3/4'>
