@@ -33,10 +33,10 @@ export default function Songs() {
                 }).map(songData => (
                   <tr key={songData.id} className="bg-gray-800 border-gray-700 hover:bg-gray-600">
                     <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-white">
-                      {songData.data.song_id}
+                      {songData.data?.song_id || "N/A"}
                     </th>
                     <td className="px-6 py-4">
-                      {songData.lyricsApiData.title}
+                      {songData.data.title || "N/A"}
                     </td>
                     <td className="px-6 py-4">
                       <Link target="_blank" referrerPolicy="no-referrer" href={songData.data.audio_url}>{songData.data.audio_url.slice(0, 7)}...{songData.data.audio_url.slice(-8)}</Link>
@@ -45,8 +45,6 @@ export default function Songs() {
                       <button className="font-medium">
                         <CiMenuKebab size={20} />
                       </button>
-
-                      <audio src={songData.songURL} muted autoPlay />
                     </td>
                   </tr>
                 )) :

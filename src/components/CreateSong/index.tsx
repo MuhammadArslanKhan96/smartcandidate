@@ -2,7 +2,7 @@ import { useAuthContext } from '@/context/AuthContext';
 import { db } from '@/utils/firebase';
 import axios from 'axios';
 import { addDoc, collection } from 'firebase/firestore';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const CreateSong = () => {
@@ -66,10 +66,10 @@ const CreateSong = () => {
 
   // }
 
-  const handleCreateSong = async e => {
+  const handleCreateSong = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { songIdea }: any = Object.fromEntries(new FormData(e.target));
+    const { songIdea }: any = Object.fromEntries(new FormData(e.currentTarget));
 
     if (songIdea.length > 200) {
       return toast.error("Song idea length exceeded");
@@ -77,31 +77,6 @@ const CreateSong = () => {
 
     try {
       setLoading(true);
-
-      const lyricsIdApiData = await axios.post("https://api.sunoaiapi.com/api/v1/gateway/generate/lyrics", {
-        prompt: songIdea,
-      }, {
-        headers: {
-          "api-key": "cn5cIfEg1rJ6EoKzNpIwOmxkkUhwkDEe",
-        }
-      }).then(r => r.data.data);
-
-      const lyricsApiData: any = await new Promise(resolve => {
-        const interval = setInterval(async () => {
-          const data = await axios.get("https://api.sunoaiapi.com/api/v1/gateway/lyrics/" + lyricsIdApiData.id, {
-            headers: {
-              "api-key": "cn5cIfEg1rJ6EoKzNpIwOmxkkUhwkDEe",
-            }
-          }).then(r => r.data.data);
-
-          if (data.status === "complete") {
-            clearInterval(interval);
-
-            resolve(data);
-          }
-        }, 5000);
-      })
-
 
       const songApiData = await axios.post("https://api.sunoaiapi.com/api/v1/gateway/generate/gpt_desc", {
         gpt_description_prompt: songIdea,
@@ -116,40 +91,46 @@ const CreateSong = () => {
 
       const newData = songApiData.map(song => ({ ...song, audio_url: `${songBaseUrl}/${song.song_id}.mp3` }));
 
-      newData.forEach(async data => {
+      // newData.forEach(async (data: any) => {
+
+      const data = newData[0];
+
+      const songData = await new Promise(async resolve => {
+        const interval = setInterval(async () => {
+          const songD = await axios.get("https://api.sunoaiapi.com/api/v1/gateway/query?ids=" + data.song_id, {
+            headers: {
+              "api-key": "cn5cIfEg1rJ6EoKzNpIwOmxkkUhwkDEe",
+            }
+          }).then(r => r.data)
 
 
-        const { songURL } = await axios.post("/api", {
-          url: data.audio_url,
-          song_id: data.song_id
-        }).then(r => r.data)
+          if (songD[0].status === "complete") {
+            clearInterval(interval);
+            resolve(songD);
+          }
+        }, 5000);
+      });
 
 
-        const newDoc = await addDoc(collection(db, "songs"), {
-          data,
+      const newDoc = await addDoc(collection(db, "songs"), {
+        data: { ...data, ...songData[0] },
+        user: user?.email,
+        creationTime: new Date().getTime(),
+        prompt: songIdea,
+      });
+
+      setUserSongs(prev => ([
+        ...prev,
+        {
+          data: { ...data, ...songData[0] },
           user: user?.email,
           creationTime: new Date().getTime(),
-          prompt: songIdea,
-          lyricsIdApiData,
-          lyricsApiData,
-          songURL
-        });
+          id: newDoc.id,
+          prompt: songIdea
+        }
+      ]))
 
-        setUserSongs(prev => ([
-          ...prev,
-          {
-            data,
-            user: user?.email,
-            creationTime: new Date().getTime(),
-            id: newDoc.id,
-            prompt: songIdea,
-            lyricsIdApiData,
-            lyricsApiData,
-            songURL
-          }
-        ]))
-
-      });
+      // });
 
 
 
