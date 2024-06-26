@@ -22,9 +22,14 @@ export default function Page() {
         <Link href="/" className="font-bold text-lg lg:text-3xl">{translations["appName"]}</Link>
         <div className="flex items-center gap-x-4">
           {!!user?.email && (
-            <Link href="/signin">
-              <button onClick={logout} className="font-bold text-base lg:text-xl">{translations["logout"]}</button>
-            </Link>
+            <>
+              <Link href="/songs">
+                <p className="font-bold text-base lg:text-xl">{translations["songs"]}</p>
+              </Link>
+              <Link href="/signin">
+                <button onClick={logout} className="font-bold text-base lg:text-xl">{translations["logout"]}</button>
+              </Link>
+            </>
           )}
           <select value={selectedLang} className="bg-black px-4 py-2 rounded-md border-none outline-none cursor-pointer" onChange={e => setSelectedLang(e.target.value)}>
             {Object.keys(languages).map(code => (

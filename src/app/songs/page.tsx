@@ -1,13 +1,14 @@
+"use client";
 import React from "react";
-import CreateSong from "../CreateSong";
-import Songs from "../Songs";
+import Songs from "@/components/Songs";
 import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { useAuthContext } from "@/context/AuthContext";
 import { languages, useTranslation } from "@/context/TranslationContext";
+import ScrollUp from "@/components/Common/ScrollUp";
 
-const Hero = () => {
+const Home = () => {
   const { selectedLang, setSelectedLang, translations } = useTranslation();
   const { user, setUser } = useAuthContext();
 
@@ -19,8 +20,9 @@ const Hero = () => {
 
   return (
     <div className="w-full min-h-screen py-4 lg:py-12 px-5 lg:px-16 h-full bg-black text-white">
+      <ScrollUp />
       <div className="border-b flex justify-between items-center border-gray-400 pb-4">
-        <h1 className="font-bold text-lg lg:text-3xl">{translations["createJingle"]}</h1>
+        <Link href="/" className="font-bold text-lg lg:text-3xl">{translations["appName"]}</Link>
         <div className="flex items-center gap-x-4">
           {!!user?.isAdmin && (
             <Link
@@ -30,9 +32,14 @@ const Hero = () => {
             </Link>
           )}
           {!!user?.email && (
-            <Link href="/signin">
-              <button onClick={logout} className="font-bold text-base lg:text-xl">{translations["logout"]}</button>
-            </Link>
+            <>
+              <Link href="/songs">
+                <p className="font-bold text-base lg:text-xl">{translations["songs"]}</p>
+              </Link>
+              <Link href="/signin">
+                <button onClick={logout} className="font-bold text-base lg:text-xl">{translations["logout"]}</button>
+              </Link>
+            </>
           )}
           <select value={selectedLang} className="bg-black px-4 py-2 rounded-md border-none outline-none cursor-pointer" onChange={e => setSelectedLang(e.target.value)}>
             {Object.keys(languages).map(code => (
@@ -41,10 +48,9 @@ const Hero = () => {
           </select>
         </div>
       </div>
-      <CreateSong />
       <Songs />
     </div>
   );
 };
 
-export default Hero;
+export default Home;

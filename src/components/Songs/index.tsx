@@ -8,7 +8,7 @@ export default function Songs() {
   const { translations } = useTranslation();
 
   return (
-    <div>
+    <div className="py-10">
       <h1 className="font-bold text-lg lg:text-3xl mb-5">{translations["songs"]}</h1>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-400">

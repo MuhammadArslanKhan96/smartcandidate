@@ -164,34 +164,37 @@ const CreateSong = () => {
   }
 
   return (
-    <form onSubmit={handleCreateSong} className="my-4 flex flex-col gap-y-6">
-      <div className="flex flex-col gap-2">
-        <label htmlFor="songIdea" className='font-medium text-base lg:text-lg'>{translations["songIdea"]}</label>
-        <textarea name="songIdea" id="songIdea" rows={5} className='bg-gray-500 border-none outline-none px-6 py-8 rounded-lg resize-none w-full' />
-      </div>
-
-
-      <div className="flex justify-between gap-2">
-        <label className='w-full'><input type="checkbox" checked={makeInstrumental} onChange={e => setMakeInstrumental(e.target.checked)} /> Instrumental ?</label>
-        <div className="flex w-full flex-col gap-2">
-          <label htmlFor="selectedRhythm" className='font-medium text-base lg:text-lg'>{translations["songRhythm"]}</label>
-          <select name="selectedRhythm" id="selectedRhythm" className='bg-gray-500 border-none outline-none px-2 py-4 rounded-lg resize-none w-full'>
-            <option value="">{translations["select"]}</option>
-            {
-              Object.entries(Rhythms).map(([key, value]) => (
-                <option value={value} key={key}>{key}</option>
-              ))
-            }
-          </select>
+    <div className='py-10'>
+      <h1 className="font-bold text-lg lg:text-3xl mb-5">{translations["createJingle"]}</h1>
+      <form onSubmit={handleCreateSong} className="my-4 flex flex-col gap-y-6">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="songIdea" className='font-medium text-base lg:text-lg'>{translations["songIdea"]}</label>
+          <textarea name="songIdea" id="songIdea" rows={5} className='bg-gray-500 border-none outline-none px-6 py-8 rounded-lg resize-none w-full' />
         </div>
-      </div>
 
-      <div className="flex items-center justify-center w-full">
-        <button disabled={loading} type='submit' className='py-4 bg-blue-600 rounded-xl border border-blue-600 hover:bg-transparent text-white hover:text-blue-600 disabled:cursor-not-allowed transition-all duration-300 ease-in-out w-3/4'>
-          {loading ? translations["loading"] : translations["makeSong"]}
-        </button>
-      </div>
-    </form>
+
+        <div className="flex justify-between gap-2">
+          <label className='w-full'><input type="checkbox" checked={makeInstrumental} onChange={e => setMakeInstrumental(e.target.checked)} /> Instrumental ?</label>
+          <div className="flex w-full flex-col gap-2">
+            <label htmlFor="selectedRhythm" className='font-medium text-base lg:text-lg'>{translations["songRhythm"]}</label>
+            <select name="selectedRhythm" id="selectedRhythm" className='bg-gray-500 border-none outline-none px-2 py-4 rounded-lg resize-none w-full'>
+              <option value="">{translations["select"]}</option>
+              {
+                Object.entries(Rhythms).map(([key, value]) => (
+                  <option value={value} key={key}>{key}</option>
+                ))
+              }
+            </select>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center w-full">
+          <button disabled={loading} type='submit' className='py-4 bg-blue-600 rounded-xl border border-blue-600 hover:bg-transparent text-white hover:text-blue-600 disabled:cursor-not-allowed transition-all duration-300 ease-in-out w-3/4'>
+            {loading ? translations["loading"] : translations["makeSong"]}
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }
 
