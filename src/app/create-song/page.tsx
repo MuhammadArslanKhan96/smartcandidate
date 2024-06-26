@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import CreateSong from "@/components/CreateSong";
+import CandidatePrompt from "@/components/CandidatePrompt";
 import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { auth } from "@/utils/firebase";
@@ -51,7 +51,7 @@ const Home = () => {
           </select>
         </div>
       </div>
-      <CreateSong />
+      <CandidatePrompt />
     </div>
   );
 };

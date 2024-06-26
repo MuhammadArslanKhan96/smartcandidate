@@ -11,5 +11,11 @@
   "loading": "Carregamento",
   "makeSong": "Criar música",
   "createJingle": "Create Jingle",
-  "songs": "Músicas"
+  "songs": "Músicas",
+  "candidateProfile": "Perfil do Candidato",
+  "candidateName": "Nome do Candidato",
+  "candidateNumber": "Número do Candidato",
+  "slogan": "Slogan",
+  "updateSuccess": "Perfil atualizado com sucesso",
+  "updateProfile": "Atualizar Perfil"
 }

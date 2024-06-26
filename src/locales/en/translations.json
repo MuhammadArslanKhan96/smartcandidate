@@ -11,5 +11,8 @@
   "loading": "Loading",
   "makeSong": "Make Song",
   "createJingle": "Create Jingle",
-  "songs": "Songs"
+  "songs": "Songs",
+  "candidateName": "Candidate Name",
+  "candidateNumber": "Candidate Number",
+  "slogan": "Slogan"
 }

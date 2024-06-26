@@ -33,6 +33,9 @@ const Home = () => {
           )}
           {!!user?.email && (
             <>
+              <Link href="/create-song">
+                <p className="font-bold text-base lg:text-xl">{translations["createJingle"]}</p>
+              </Link>
               <Link href="/songs">
                 <p className="font-bold text-base lg:text-xl">{translations["songs"]}</p>
               </Link>

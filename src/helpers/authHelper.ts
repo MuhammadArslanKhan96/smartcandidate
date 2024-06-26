@@ -30,13 +30,11 @@ export const signUpWithEmail = async (email: string, password: string, committee
 
   if (!success) throw new Error(error?.errorMessage);
 
-  const totalCandidates = (await getDocs(collection(db, "users"))).docs.length;
-
   const { displayName, phoneNumber, providerData, refreshToken } = data;
 
-  await setDoc(doc(db, "users", data.email), { committee, name, phone, displayName, email, phoneNumber, providerData, refreshToken, isAdmin: false, isFrozen: true, candidate_number: totalCandidates + 1, gender });
+  await setDoc(doc(db, "users", data.email), { committee, name, phone, displayName, email, phoneNumber, providerData, refreshToken, isAdmin: false, isFrozen: true, gender, candidateName: "", candidateNumber: "", slogan: "" });
 
-  return { ...data, committee, name, phone, isAdmin: false, isFrozen: true, candidate_number: totalCandidates + 1, gender };
+  return { ...data, committee, name, phone, isAdmin: false, isFrozen: true, gender, candidateName: "", candidateNumber: "", slogan: "" };
 
 }
 
