@@ -18,9 +18,8 @@ const Rhythms = {
 }
 
 const CandidatePrompt = () => {
-  const [makeInstrumental, setMakeInstrumental] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { user, setUserSongs } = useAuthContext();
+  const { user, setUserSongs, userSongs } = useAuthContext();
   const { translations, selectedLang } = useTranslation();
 
   const handleCandidatePrompt = async (e: FormEvent<HTMLFormElement>) => {
@@ -33,9 +32,10 @@ const CandidatePrompt = () => {
     try {
       setLoading(true);
 
-      const songApiData = await axios.post("https://api.sunoaiapi.com/api/v1/gateway/generate/gpt_desc", {
-        gpt_description_prompt: `Create a ${selectedRhythm} jingle in ${selectedLang === "pt" ? "Brazilian Portuguese" : "US English"} singed by ${user?.gender} singer promoting ${candidateName}, candidate number ${candidateNumber}, with the slogan "${slogan}". Emphasize his connection to the people and the city, making it catchy and vibrant.`,
-        make_instrumental: makeInstrumental,
+      const songApiData = await axios.post("https://api.sunoaiapi.com/api/v1/gateway/generate/music", {
+        title: `${candidateName} - ${slogan} ${userSongs.length}`,
+        tags: selectedRhythm,
+        prompt: `Create a ${selectedRhythm} jingle in ${selectedLang === "pt" ? "Brazilian Portuguese" : "US English"} singed by ${user?.gender} singer promoting ${candidateName}, candidate number ${candidateNumber}, with the slogan "${slogan}". Emphasize his connection to the people and the city, making it catchy and vibrant.`,
       }, {
         headers: {
           "api-key": "cn5cIfEg1rJ6EoKzNpIwOmxkkUhwkDEe",
@@ -116,19 +116,16 @@ const CandidatePrompt = () => {
           <input name="slogan" id="slogan" className='bg-gray-500 border-none outline-none px-6 py-8 rounded-lg resize-none w-full' />
         </div>
 
-        <div className="flex justify-between gap-2">
-          <label className='w-full'><input type="checkbox" checked={makeInstrumental} onChange={e => setMakeInstrumental(e.target.checked)} /> Instrumental ?</label>
-          <div className="flex w-full flex-col gap-2">
-            <label htmlFor="selectedRhythm" className='font-medium text-base lg:text-lg'>{translations["songRhythm"]}</label>
-            <select name="selectedRhythm" id="selectedRhythm" className='bg-gray-500 border-none outline-none px-2 py-4 rounded-lg resize-none w-full'>
-              <option value="">{translations["select"]}</option>
-              {
-                Object.entries(Rhythms).map(([key, value]) => (
-                  <option value={value} key={key}>{key}</option>
-                ))
-              }
-            </select>
-          </div>
+        <div className="flex w-full flex-col gap-2">
+          <label htmlFor="selectedRhythm" className='font-medium text-base lg:text-lg'>{translations["songRhythm"]}</label>
+          <select name="selectedRhythm" id="selectedRhythm" className='bg-gray-500 border-none outline-none px-2 py-4 rounded-lg resize-none w-full'>
+            <option value="">{translations["select"]}</option>
+            {
+              Object.entries(Rhythms).map(([key, value]) => (
+                <option value={value} key={key}>{key}</option>
+              ))
+            }
+          </select>
         </div>
 
         <div className="flex items-center justify-center w-full">
